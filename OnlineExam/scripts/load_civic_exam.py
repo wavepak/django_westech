@@ -14,13 +14,13 @@ from datetime import date
 import django
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import connections
-# os.environ['env'] = 'prod' # set environ to non-dev
+os.environ['env'] = 'prod' # set environ to non-dev
 sys.path.append(os.path.abspath('../')) # jump to upper level folder for settings
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
 django.setup()
 
 # Load up models
-from civic_exam.models import Question, Anwser, Cat, Subcat
+from civic_exam.models import Question, Answer, Cat, Subcat
 
 def help():
     print('Usage: {} [civic_exam csv]'.format(sys.argv[0]))
@@ -56,7 +56,7 @@ def main():
 
     init_cats()
     # Question.objects.all().delete()
-    # Anwser.objects.all().delete()
+    # Answer.objects.all().delete()
     count = 0
     for _, row in df_inp_exam.iterrows():
         d = dict(row)
@@ -64,7 +64,7 @@ def main():
         sc = Subcat.objects.get(value=row['subcat'])
         q = Question(value=row['question'], cat=c, subcat=sc)
         q.save()
-        a = Anwser(question=q, value=row['anwser'])
+        a = Answer(question=q, value=row['Answer'])
         a.save()
         print('Uploaded: qes={}, anw={}'.format(q.value, a.value))
         count += 1
