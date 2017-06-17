@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h3><i class="glyphicon glyphicon-list-alt"></i>&nbsp;Exam | Cat: {{sel_cat}} Order: {{sel_order}} </h3>
+
+<h4><i class="glyphicon glyphicon-question-sign"></i>&nbsp;Question # {{n_current}}/{{n_total}}</h4>
+
+<form action="{% url 'exam' %}" method="post" style="display: inline">
+  {% csrf_token %}
+  {% if qna_set %}
+    {% load static %}
+    {% load to_mp3 %}
+    <p> {{qna_set.answer.question.value}}</p>
+    <audio autoplay controls controlsList="nodownload noremoteplayback">
+    <source src="{% static qna_set.answer_id|to_mp3 %}" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+
+    {% load repl_sc %}
+    <div id="opbr_group">
+      {% for choice in choices %}
+      <div class="radio">
+        <label style="display: inline">
+            <input type="radio" name="optionsRadios" value="{{forloop.counter}}"> {{choice.value|repl_sc}}
+        </label>
+      </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>Error: No question set found!</p>
+  {% endif %}
+  <button type="submit" class="btn btn-outline btn-primary">Next</button>
+</form>
+<form action="{% url 'summary' %}" method="get" style="display: inline">
+    <button type="submit" class="btn btn-outline btn-danger">Quit</button>
+</form>
+
+{% endblock %}

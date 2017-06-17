@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% load static %}
+
+<h2><img src="{% static 'img/favicon-32x32.png' %}"> Civic Test Data Summary</h2>
+
+{% if Category %}
+  <h3><i class="glyphicon glyphicon-tag"></i>&nbsp;General category:</h3>
+    <ul>
+    {% for cat in Category %}
+        <li>{{cat.value}} = {{cat.num_cat}} </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No general category info.</p>
+{% endif %}
+
+{% if Subcat %}
+  <h3><i class="glyphicon glyphicon-tags"></i>&nbsp; Sub category: </p></h3>
+    <ul>
+    {% for scat in Subcat %}
+        <li>{{scat.value}} = {{scat.num_subcat}} </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No sub category info.</p>
+{% endif %}
+
+<form action='.' method="post">
+  {% csrf_token %}
+  <!-- <div>Your name/nickname:
+    <input class="form-control" name="username" placeholder="AnonymousUser" style="width: 25%; display: inline">
+  </div> -->
+  <div> Select a pool for study
+    <select class="form-control" name="select_cat" style="width: 25%; display: inline">
+      <option>ALL</option>
+      {% if Category %}
+        {% for cat in Category %}
+          <option>{{cat.value}}</option>
+        {% endfor %}
+      {% endif %}
+      {% if Subcat %}
+        {% for scat in Subcat %}
+          <option>{{scat.value}}</option>
+        {% endfor %}
+      {% endif %}
+    </select>
+    with
+    <select class="form-control" name="select_order" style="width: 15%; display: inline">
+      <option> Ascend </option>
+      <option> Descend </option>
+      <option> Scrambled </option>
+    </select> order and max
+    <select class="form-control" name="select_num" style="width: 5%; display: inline">
+      <!-- <option> 3 </option> -->
+      <option> 10 </option>
+      <option> 20 </option>
+      <option> ALL </option>
+    </select> questions
+    <hr>
+    <p>
+      <button type="submit" class="btn btn-outline btn-success" name='go_practice'>Go Practice</button>
+      <button type="submit" class="btn btn-outline btn-danger" name='go_exam'>Take Exam</button>
+    </p>
+  </div>
+</form>
+
+{% endblock %}

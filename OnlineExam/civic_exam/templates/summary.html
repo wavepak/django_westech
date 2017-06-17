@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if exam_set %}
+  <h3> Exam Summary </h3>
+  <!-- <img> -->
+  <div> Correct answers:
+    <strong>{{n_correct}}/{{n_total}}</strong> &nbsp; Percentile:
+    <strong style="color:limegreen"> {{percentile}} </strong>
+  </div>
+  <h4>Exam Review</h4>
+
+  {% load static %}
+  {% load repl_sc %}
+  {% for e, ec in exam_set %}
+    <h4>Question # {{forloop.counter}}/{{n_total}}</h4>
+    <p> {{e.answer.question.value}}</p>
+    {% for choice in ec %}
+      <div class="checkbox">
+        {% if choice.qid > 0 %}
+          <img src="{% static choice.info %}" height="32" width="32">
+        {% else %}
+          <img src="{% static choice.info %}" height="32" width="32" style="visibility: hidden">
+        {% endif %}
+        <label style="display: inline">
+        {% if choice.qid == 1 %}
+          <input type="checkbox" name="optionsChecks" checked> {{choice.value|repl_sc}}
+        {% else %}
+          <input type="checkbox" name="optionsChecks"> {{choice.value|repl_sc}}
+        {% endif %}
+        </label>
+      </div>
+     {% endfor %}
+  {% endfor %}
+{% else %}
+  <h3> No exam summary found :-/</h3>
+{% endif %}
+
+<form action="{% url 'index' %}" method="get" style="display: inline">
+    <button type="submit" class="btn btn-outline btn-danger">OK! Go Back</button>
+</form>
+
+{% endblock %}

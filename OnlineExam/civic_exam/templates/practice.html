@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block script %}
+<script>
+  $(document).ready(function(){
+    // $("input[name=optionsRadios]:radio").click(function () {
+    // $(document).click(function() {
+    $('#opbr_group input').on('change', function() {
+      // alert($("input[name='optionsRadios']:checked").val())
+      var img_id = $('input[name=optionsRadios]:checked', '#opbr_group').val();
+      // console.log(img_id);
+      $("#"+img_id).css("visibility", "visible");
+    });
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+
+<h3><i class="glyphicon glyphicon-education"></i>&nbsp;Practice for Exam | Cat: {{sel_cat}} Order: {{sel_order}}</h3>
+
+<h4><i class="glyphicon glyphicon-question-sign"></i>&nbsp;Question # {{n_current}}/{{n_total}}</h4>
+
+{% if qna_set %}
+  {% load static %}
+  {% load to_mp3 %}
+  <p> {{qna_set.answer.question.value}}</p>
+  <audio autoplay controls controlsList="nodownload noremoteplayback">
+  <source src="{% static qna_set.answer_id|to_mp3 %}" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+  {% load shuffle %}
+  {% load repl_sc %}
+  <div id="opbr_group">
+    {% for choice in choices|shuffle %}
+    <div class="radio">
+        <img src="{% static choice.info %}" height="32" width="32" id="option{{forloop.counter}}" style="visibility: hidden">
+          <label style="display: inline">
+              <input type="radio" name="optionsRadios" value="option{{forloop.counter}}"> {{choice.value|repl_sc}}
+          </label>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="panel panel-default">
+      <div class="panel-heading">
+          <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href="#solu1">
+                  <span><i class="glyphicon glyphicon-info-sign"></i>&nbsp;Answer Key</span>
+              </a>
+          </h4>
+      </div>
+      <div id="solu1" class="panel-collapse collapse">
+        <div class="panel-body">
+          {{qna_set.answer.value|linebreaksbr}}
+        </div>
+      </div>
+  </div>
+{% else %}
+  <p>Error: No question set found!</p>
+{% endif %}
+
+<form action="{% url 'practice' %}" method="get" style="display: inline">
+    <button type="submit" class="btn btn-outline btn-primary">Next</button>
+</form>
+<form action="{% url 'index' %}" method="get" style="display: inline">
+    <button type="submit" class="btn btn-outline btn-danger">Quit</button>
+</form>
+
+{% endblock %}
