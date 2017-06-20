@@ -1,3 +1,6 @@
+from .utils import _tstamp
+
+
 class CommonMixin:
 
     @classmethod
@@ -9,7 +12,7 @@ class CommonMixin:
         if usr.num_q < 0:
             usr.num_q = len(questions)
         usr.save()
-        print('>>usr_id= {}'.format(usr.id)) # debug pring
+        print('{ts}>>[INFO] usr_id= {uid}'.format(ts=_tstamp(), uid=usr.id)) # debug pring
         for idx in l_idx:
             q = cls(user=usr, answer=Answer.objects.get(question=questions[idx]))
             q.save()

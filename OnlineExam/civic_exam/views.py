@@ -1,8 +1,9 @@
+import random
 from django.shortcuts import render
 from django.db.models import Count
-from .models import Answer, Question, User, Cat, Subcat, Practice, Exam, Summary
-# from django.middleware.csrf import get_token
 from django.views.decorators.csrf import requires_csrf_token
+from .models import Answer, Question, User, Cat, Subcat, Practice, Exam, Summary
+from .utils import _tstamp
 
 
 # utility function
@@ -17,12 +18,13 @@ def get_cat_subcat():
 
 @requires_csrf_token
 def make_session_token(request):
-    csrftoken = request.COOKIES['csrftoken']
-    if csrftoken:
+    try:
+        csrftoken = request.COOKIES['csrftoken']
         request.session['id'] = csrftoken
-    else:
-        print('[WARN]>>empty csrftoken! ip={}'.format(request.META['REMOTE_ADDR'])) # debug print
-        request.session['id'] = 'anonymous'
+    except:
+        print('{ts}>>[WARNING] Empty csrftoken! IP= {ip}'.format(ts=_tstamp(), ip=request.META['REMOTE_ADDR'])) # debug print
+        request.session['id'] = 'anonymous{:03d}'.format(random.randrange(0, 1000))
+
 
 def login(request, err_msg=''):
     sess_id = request.session['id']
@@ -38,7 +40,6 @@ def login(request, err_msg=''):
 def index(request):
     context = {}
     if request.method == 'GET':
-        # print('>>r.sess= {}'.format(request.session)) #debug print
         if 'id' not in request.session:
             make_session_token(request) # prepare session token for first visit
         usr = User.get_user(request.session['id'])
@@ -62,12 +63,9 @@ def index(request):
 
 
 def practice(request):
-    qna_set = False # debug
+    qna_set = False
     site_to_render = 'practice.html'
     sess_id = request.session['id']
-    # print('Cookies: {}'.format(request.COOKIES)) # debug print
-    # from pprint import pprint
-    # pprint(request.META) # debug print
     if request.method == 'GET':
         qna_set, l_choices, usr, n_cur = Practice.get_next_question(sess_id, Question, User)
         if qna_set:
@@ -82,9 +80,6 @@ def practice(request):
         sel_num = request.POST['select_num']
         sel_num = -1 if sel_num == 'ALL' else int(sel_num)
         qna_set, l_choices, n_total = Practice.prepare_qlist(sess_id, [sel_cat, sel_order, sel_num], Answer, Question, User)
-        # qna_set = Practice.objects.get(id=1)
-        # print(qna_set.answer.question.value) # debug print
-        # print(qna_set.answer.value) # debug print
         context = {'sel_cat':sel_cat, 'sel_order':sel_order,'qna_set':qna_set, 'choices':l_choices,
                    'n_current':1, 'n_total':n_total}
     return render(request, site_to_render, context)
@@ -108,7 +103,7 @@ def exam(request):
         except:
             # no selection or invalid anwser
             sel_choice = -1
-        print('>>sel_choice = {}'.format(sel_choice)) # debug print
+        # print('>>sel_choice = {}'.format(sel_choice)) # debug print
         qna_set, l_choices, usr, n_cur = Exam.get_next_question(sess_id, Question, User, True, sel_choice)
         if qna_set:
             context = {'sel_cat':usr.cat, 'sel_order':usr.order, 'qna_set':qna_set, 'choices':l_choices,
