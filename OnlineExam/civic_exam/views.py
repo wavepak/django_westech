@@ -1,7 +1,5 @@
-import random
 from django.shortcuts import render
 from django.db.models import Count
-from django.views.decorators.csrf import requires_csrf_token
 from .models import Answer, Question, User, Cat, Subcat, Practice, Exam, Summary
 from .utils import _tstamp
 
@@ -16,18 +14,17 @@ def get_cat_subcat():
     return {'Category': CATS, 'Subcat': SUBCATS}
 
 
-@requires_csrf_token
 def make_session_token(request):
     try:
         csrftoken = request.COOKIES['csrftoken']
-        request.session['id'] = csrftoken
+        request.session['init'] = csrftoken
     except:
         print('{ts}>>[WARNING] Empty csrftoken! IP= {ip}'.format(ts=_tstamp(), ip=request.META['REMOTE_ADDR'])) # debug print
-        request.session['id'] = 'anonymous{:03d}'.format(random.randrange(0, 1000))
+        request.session['init'] = request.session.session_key
 
 
 def login(request, err_msg=''):
-    sess_id = request.session['id']
+    sess_id = request.session.session_key
     usr = User.get_user(sess_id)
     if usr:
         context = {'usernm':usr.name}
@@ -42,7 +39,7 @@ def index(request):
     if request.method == 'GET':
         if 'id' not in request.session:
             make_session_token(request) # prepare session token for first visit
-        usr = User.get_user(request.session['id'])
+        usr = User.get_user(request.session['init'])
         if not usr:
             return login(request)
         context['username'] = usr.name
@@ -57,7 +54,7 @@ def index(request):
             if not usernm:
                 return login(request, 'Bad or invalid user name, please change one.')
             context['username'] = request.POST['username']
-            User.new_session(context['username'], request.META['REMOTE_ADDR'], request.session['id'])
+            User.new_session(context['username'], request.META['REMOTE_ADDR'], request.session.session_key)
     context.update(get_cat_subcat())
     return render(request, 'index.html', context)
 
@@ -65,7 +62,7 @@ def index(request):
 def practice(request):
     qna_set = False
     site_to_render = 'practice.html'
-    sess_id = request.session['id']
+    sess_id = request.session.session_key
     if request.method == 'GET':
         qna_set, l_choices, usr, n_cur = Practice.get_next_question(sess_id, Question, User)
         if qna_set:
@@ -88,7 +85,7 @@ def practice(request):
 def exam(request):
     qna_set = False # debug
     site_to_render = 'exam.html'
-    sess_id = request.session['id']
+    sess_id = request.session.session_key
     if 'go_exam' in request.POST:
         sel_cat = request.POST['select_cat']
         sel_order = request.POST['select_order']
@@ -115,7 +112,7 @@ def exam(request):
 
 def summary(request):
     # site_to_render = 'summary.html'
-    sess_id = request.session['id']
+    sess_id = request.session.session_key
     summ = Summary(sess_id)
     usr, exam_set, exam_choices, n_correct = summ.get_summary()
     context = {'sel_cat':usr.cat, 'sel_order':usr.order, 'exam_set':zip(exam_set,exam_choices),
