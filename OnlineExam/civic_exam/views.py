@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.db.models import Count
 from .models import Answer, Question, User, Cat, Subcat, Practice, Exam, Summary
+# from django.middleware.csrf import get_token
+from django.views.decorators.csrf import requires_csrf_token
 
 
 # utility function
@@ -13,8 +15,17 @@ def get_cat_subcat():
     return {'Category': CATS, 'Subcat': SUBCATS}
 
 
+@requires_csrf_token
+def make_session_token(request):
+    csrftoken = request.COOKIES['csrftoken']
+    if csrftoken:
+        request.session['id'] = csrftoken
+    else:
+        print('[WARN]>>empty csrftoken! ip={}'.format(request.META['REMOTE_ADDR'])) # debug print
+        request.session['id'] = 'anonymous'
+
 def login(request, err_msg=''):
-    sess_id = request.COOKIES['csrftoken']
+    sess_id = request.session['id']
     usr = User.get_user(sess_id)
     if usr:
         context = {'usernm':usr.name}
@@ -24,11 +35,13 @@ def login(request, err_msg=''):
     return render(request, 'login.html', context)
 
 
-# Create your views here.
 def index(request):
     context = {}
     if request.method == 'GET':
-        usr = User.get_user(request.COOKIES['csrftoken'])
+        # print('>>r.sess= {}'.format(request.session)) #debug print
+        if 'id' not in request.session:
+            make_session_token(request) # prepare session token for first visit
+        usr = User.get_user(request.session['id'])
         if not usr:
             return login(request)
         context['username'] = usr.name
@@ -43,7 +56,7 @@ def index(request):
             if not usernm:
                 return login(request, 'Bad or invalid user name, please change one.')
             context['username'] = request.POST['username']
-            User.new_session(context['username'], request.META['REMOTE_ADDR'], request.COOKIES['csrftoken'])
+            User.new_session(context['username'], request.META['REMOTE_ADDR'], request.session['id'])
     context.update(get_cat_subcat())
     return render(request, 'index.html', context)
 
@@ -51,7 +64,7 @@ def index(request):
 def practice(request):
     qna_set = False # debug
     site_to_render = 'practice.html'
-    sess_id = request.COOKIES['csrftoken']
+    sess_id = request.session['id']
     # print('Cookies: {}'.format(request.COOKIES)) # debug print
     # from pprint import pprint
     # pprint(request.META) # debug print
@@ -80,7 +93,7 @@ def practice(request):
 def exam(request):
     qna_set = False # debug
     site_to_render = 'exam.html'
-    sess_id = request.COOKIES['csrftoken']
+    sess_id = request.session['id']
     if 'go_exam' in request.POST:
         sel_cat = request.POST['select_cat']
         sel_order = request.POST['select_order']
@@ -107,7 +120,7 @@ def exam(request):
 
 def summary(request):
     # site_to_render = 'summary.html'
-    sess_id = request.COOKIES['csrftoken']
+    sess_id = request.session['id']
     summ = Summary(sess_id)
     usr, exam_set, exam_choices, n_correct = summ.get_summary()
     context = {'sel_cat':usr.cat, 'sel_order':usr.order, 'exam_set':zip(exam_set,exam_choices),
