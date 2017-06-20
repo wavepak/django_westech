@@ -108,15 +108,22 @@ class User(models.Model):
     user name and custom selections
     """
     name = models.CharField(max_length=255, default='')
-    cat = models.CharField(max_length=255)
-    order = models.CharField(max_length=255)
+    cat = models.CharField(max_length=255, null=True)
+    order = models.CharField(max_length=255, null=True)
     num_q = models.IntegerField(blank=True, null=True)
     exam_mode = models.BooleanField(default=False)
+    ip_addr = models.CharField(max_length=100, blank=True, default='')
+    session = models.CharField(max_length=255, blank=True, default='')
     created_at = models.DateTimeField(auto_now=True)
 
     @classmethod
-    def get_user(cls, username):
-        return cls.objects.filter(name=username).order_by('-created_at').first()
+    def new_session(cls, username, ip, sess_id):
+        usr = cls(name=username, ip_addr=ip, session=sess_id)
+        usr.save()
+
+    @classmethod
+    def get_user(cls, sess_id):
+        return cls.objects.filter(session=sess_id).order_by('-created_at').first()
 
 
 class Practice(models.Model, CommonMixin):
@@ -145,8 +152,8 @@ class Exam(models.Model, CommonMixin):
 
 
 class Summary():
-    def __init__(self, username):
-        self.usr = User.get_user(username)
+    def __init__(self, sess_id):
+        self.usr = User.get_user(sess_id)
         self.exam_set = Exam.objects.filter(Q(user=self.usr) & ~Q(choices='')).order_by('id')
 
     def get_all_choices(self):

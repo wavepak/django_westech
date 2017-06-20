@@ -5,6 +5,7 @@
 {% load static %}
 
 <h2><img src="{% static 'img/favicon-32x32.png' %}"> Civic Test Data Summary</h2>
+<p>Welcome <strong>{{username|title}}</strong> ! (<a href= "{% url 'login' %}">Not</a> {{username}})</p>
 
 {% if Category %}
   <h3><i class="glyphicon glyphicon-tag"></i>&nbsp;General category:</h3>

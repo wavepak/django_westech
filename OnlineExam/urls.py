@@ -18,8 +18,9 @@ from django.contrib import admin
 from civic_exam import views
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    # url(r'^admin/', admin.site.urls),
     url(r'^$', views.index, name='index'),
+    url(r'^login/$', views.login, name='login'),
     url(r'^practice/$', views.practice, name='practice'),
     url(r'^exam/$', views.exam, name='exam'),
     url(r'^summary/$', views.summary, name='summary'),
