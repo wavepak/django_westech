@@ -14,7 +14,7 @@ def get_cat_subcat():
 
 
 def login(request, err_msg=''):
-    sess_id = request.META['TERM_SESSION_ID']
+    sess_id = request.COOKIES['csrftoken']
     usr = User.get_user(sess_id)
     if usr:
         context = {'usernm':usr.name}
@@ -28,7 +28,7 @@ def login(request, err_msg=''):
 def index(request):
     context = {}
     if request.method == 'GET':
-        usr = User.get_user(request.META['TERM_SESSION_ID'])
+        usr = User.get_user(request.COOKIES['csrftoken'])
         if not usr:
             return login(request)
         context['username'] = usr.name
@@ -43,7 +43,7 @@ def index(request):
             if not usernm:
                 return login(request, 'Bad or invalid user name, please change one.')
             context['username'] = request.POST['username']
-            User.new_session(context['username'], request.META['REMOTE_ADDR'], request.META['TERM_SESSION_ID'])
+            User.new_session(context['username'], request.META['REMOTE_ADDR'], request.COOKIES['csrftoken'])
     context.update(get_cat_subcat())
     return render(request, 'index.html', context)
 
@@ -51,7 +51,7 @@ def index(request):
 def practice(request):
     qna_set = False # debug
     site_to_render = 'practice.html'
-    sess_id = request.META['TERM_SESSION_ID']
+    sess_id = request.COOKIES['csrftoken']
     # print('Cookies: {}'.format(request.COOKIES)) # debug print
     # from pprint import pprint
     # pprint(request.META) # debug print
@@ -80,7 +80,7 @@ def practice(request):
 def exam(request):
     qna_set = False # debug
     site_to_render = 'exam.html'
-    sess_id = request.META['TERM_SESSION_ID']
+    sess_id = request.COOKIES['csrftoken']
     if 'go_exam' in request.POST:
         sel_cat = request.POST['select_cat']
         sel_order = request.POST['select_order']
@@ -107,7 +107,7 @@ def exam(request):
 
 def summary(request):
     # site_to_render = 'summary.html'
-    sess_id = request.META['TERM_SESSION_ID']
+    sess_id = request.COOKIES['csrftoken']
     summ = Summary(sess_id)
     usr, exam_set, exam_choices, n_correct = summ.get_summary()
     context = {'sel_cat':usr.cat, 'sel_order':usr.order, 'exam_set':zip(exam_set,exam_choices),

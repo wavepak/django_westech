@@ -1,6 +1,3 @@
-# Load up models
-# from models import Answer, Question, User
-
 class CommonMixin:
 
     @classmethod
@@ -25,7 +22,7 @@ class CommonMixin:
         if sel_choice >= 0:
             q_last = cls.objects.filter(user=usr).filter(viewed=True).order_by('-id').first()
             select = q_last.choices.split(',')[sel_choice]
-            print('>>select = {}'.format(select)) # debug print
+            # print('>>select = {}'.format(select)) # debug print
             q_last.select = select
             q_last.save()
         q = cls.objects.filter(user=usr).filter(viewed=False).order_by('id').first()

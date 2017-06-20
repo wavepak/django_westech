@@ -79,7 +79,7 @@ class Question(models.Model):
         else:
             n_len = max(sel_num, len(questions))
             n_qs = min(sel_num, len(questions))
-        print('>>{} {}'.format(n_len, n_qs))
+        # print('>>{} {}'.format(n_len, n_qs))
         l_idx = [i for i in range(0, n_qs)]
         if sel_order[0] == 'D':
             l_idx.reverse()

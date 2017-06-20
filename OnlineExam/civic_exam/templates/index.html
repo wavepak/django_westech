@@ -5,7 +5,8 @@
 {% load static %}
 
 <h2><img src="{% static 'img/favicon-32x32.png' %}"> Civic Test Data Summary</h2>
-<p>Welcome <strong>{{username|title}}</strong> ! (<a href= "{% url 'login' %}">Not</a> {{username}})</p>
+<p>Welcome <strong>{{username|title}}</strong> !
+  (<a href= "{% url 'login' %}">Not</a> <i>{{username|title}})</i></p>
 
 {% if Category %}
   <h3><i class="glyphicon glyphicon-tag"></i>&nbsp;General category:</h3>
@@ -50,9 +51,9 @@
     </select>
     with
     <select class="form-control" name="select_order" style="width: 15%; display: inline">
+      <option> Scrambled </option>
       <option> Ascend </option>
       <option> Descend </option>
-      <option> Scrambled </option>
     </select> order and max
     <select class="form-control" name="select_num" style="width: 5%; display: inline">
       <!-- <option> 3 </option> -->

@@ -1,30 +1,38 @@
 {% extends "base.html" %}
 
-{% block content %}
-
 {% load static %}
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-4 col-md-offset-4">
-            <div class="login-panel panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Please put your name here</h3>
-                </div>
-                <div class="panel-body">
-                  <form action="{% url 'index' %}" method="post">
-                    {% csrf_token %}
-                        <fieldset>
-                            <div class="form-group">
-                                <input class="form-control" name="username" value="{{usernm}}">
-                            </div>
-                            {% if err_msg %}
-                              <span style="color:lightcoral"> {{err_msg}}</span>
-                            {% endif %}
-                            <button type="submit" class="btn btn-block btn-success" name='login'>OK, let's do it!</button>
-                        </fieldset>
-                    </form>
-                </div>
+{% block script %}
+<style>
+  body  {
+    background-image: url("{% static 'img/bkgd.jpg' %}");
+    background-size: cover;
+    background-position: 50% 50%;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-md-4 col-md-offset-4">
+        <div class="login-panel panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Please put your name here</h3>
+            </div>
+            <div class="panel-body">
+              <form action="{% url 'index' %}" method="post">
+                {% csrf_token %}
+                    <fieldset>
+                        <div class="form-group">
+                            <input class="form-control" name="username" value="{{usernm}}" autofocus>
+                        </div>
+                        {% if err_msg %}
+                          <span style="color:lightcoral"> {{err_msg}}</span>
+                        {% endif %}
+                        <button type="submit" class="btn btn-block btn-success" name='login'>Let's get started!</button>
+                    </fieldset>
+                </form>
             </div>
         </div>
     </div>
