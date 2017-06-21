@@ -37,9 +37,9 @@ def login(request, err_msg=''):
 def index(request):
     context = {}
     if request.method == 'GET':
-        if 'id' not in request.session:
+        if not request.session.session_key:
             make_session_token(request) # prepare session token for first visit
-        usr = User.get_user(request.session['init'])
+        usr = User.get_user(request.session.session_key)
         if not usr:
             return login(request)
         context['username'] = usr.name

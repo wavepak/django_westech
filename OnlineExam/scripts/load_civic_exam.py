@@ -33,8 +33,8 @@ def init_cats():
                 ['3A: Geography', '3B: Symbols', '3C: Holidays'])
 
     # Truncate table
-    # Cat.objects.all().delete()
-    # Subcat.objects.all().delete() # Truncate table
+    Cat.objects.all().delete()
+    Subcat.objects.all().delete() # Truncate table
     for idx, cat in enumerate(l_cat):
         c = Cat(value=cat)
         c.save()
@@ -55,8 +55,8 @@ def main():
     print('Input csv: {}'.format(inp_csv))
 
     init_cats()
-    # Question.objects.all().delete()
-    # Answer.objects.all().delete()
+    Question.objects.all().delete()
+    Answer.objects.all().delete()
     count = 0
     for _, row in df_inp_exam.iterrows():
         d = dict(row)
@@ -64,9 +64,9 @@ def main():
         sc = Subcat.objects.get(value=row['subcat'])
         q = Question(value=row['question'], cat=c, subcat=sc)
         q.save()
-        a = Answer(question=q, value=row['Answer'])
+        a = Answer(question=q, value=row['answer'])
         a.save()
-        print('Uploaded: qes={}, anw={}'.format(q.value, a.value))
+        # print('Uploaded: qes={}, anw={}'.format(q.value, a.value))
         count += 1
 
     print('Total uploaded: {}'.format(count))
