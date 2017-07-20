@@ -24,8 +24,7 @@ def make_session_token(request):
 
 
 def login(request, err_msg=''):
-    sess_id = request.session.session_key
-    usr = User.get_user(sess_id)
+    usr = User.get_user(request.session.session_key)
     if usr:
         context = {'usernm':usr.name}
     else:

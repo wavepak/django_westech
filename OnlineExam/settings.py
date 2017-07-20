@@ -13,7 +13,7 @@ SECRET_KEY = 'h_bp4%@d942+6+)3s8xbq(4=!+=o!vmuo@l)qwga8c-iw2xwqe'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['westec.xyz','ec2-52-26-87-68.us-west-2.compute.amazonaws.com']
+ALLOWED_HOSTS = ['westec.xyz','ec2-52-26-87-68.us-west-2.compute.amazonaws.com','localhost']
 
 
 # Application definition
