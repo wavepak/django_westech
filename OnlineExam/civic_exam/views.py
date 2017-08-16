@@ -117,3 +117,7 @@ def summary(request):
     context = {'sel_cat':usr.cat, 'sel_order':usr.order, 'exam_set':zip(exam_set,exam_choices),
                'n_correct': n_correct, 'n_total':usr.num_q, 'percentile':'{:.0f}%'.format(n_correct*100/usr.num_q)}
     return render(request, 'summary.html', context)
+
+
+def demopage(request):
+    return render(request, 'demopage.html')

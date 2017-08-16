@@ -24,4 +24,5 @@ urlpatterns = [
     url(r'^practice/$', views.practice, name='practice'),
     url(r'^exam/$', views.exam, name='exam'),
     url(r'^summary/$', views.summary, name='summary'),
+    url(r'^demo/$', views.demopage, name='demopage'),
 ]
