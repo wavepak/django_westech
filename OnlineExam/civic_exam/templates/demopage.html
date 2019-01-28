@@ -3,9 +3,8 @@
 {% block content %}
 {% load static %}
 
-<h1 id="data-analyst-in-e-commerce">Data Analyst in E-Commerce</h1>
-<hr>
-<h2 id="e-commerce-industry-overview">E-commerce Industry Overview</h2>
+<h1 id="e-commerce-analytics">E-Commerce Analytics</h1>
+<h2 id="e-commerce-industry-overview">E-Commerce Industry Overview</h2>
 <ul>
   <li><p>What is E-Commerce?</p>
     <p>Business model enabling a firm or individual to conduct business over an electronic network, typically the internet.</p>
@@ -13,67 +12,108 @@
   <li><p>Types of E-Commerce:</p>
     <ul>
       <li>Consumer-to-Consumer (C2C): Ebay/Amazon, Airbnb, Uber/Didi, T-mall/Taobao,</li>
-      <li>Business-to-Consumer (B2C): Amazon, Alibaba/JD, Freelance</li>
-      <li>Business-to-Business (B2B): Square, Amazon AWS, MS Azure</li>
-      <li>Consumer-to-Business (C2B): Google Adsense</li>
+      <li>Business-to-Consumer (B2C): Amazon.com, Walmart/Target.com, Alibaba/JD</li>
+      <li>Business-to-Business (B2B): Amazon AWS, MS Azure, Google Analytics, Aliyun.com, Square</li>
+      <li>Consumer-to-Business (C2B): Google Adsense, Survey Monkey</li>
     </ul>
   </li>
   <li><p>Product: physical/digital/service and etc.</p>
   </li>
 </ul>
-<h2 id="ba-da-in-e-commerce">BA/DA in E-Commerce</h2>
+<h2 id="key-metrics-in-e-commerce-industry">Key Metrics in E-Commerce Industry</h2>
 <ul>
-  <li><p>Business Analyst</p>
+  <li><p>Traffic:</p>
     <ul>
-      <li>Under CFO or COO</li>
-      <li>Business Intelligence (BI) team</li>
-      <li>Support various department: warehouse/UX design/marketing/operation/intl.</li>
+      <li>Visits - impression, click: repeat/new visitor by session/browser</li>
+      <li>Rates - click through rate (CTR), conversion rate</li>
     </ul>
   </li>
-  <li><p>Data Analyst</p>
+  <li><p>Sales/Transaction:</p>
     <ul>
-      <li>Under CTO</li>
-      <li>Data Analytics/Data Science team</li>
-      <li>Support marketing/stragey/BI and work with technology closely</li>
+      <li>Gross: GsSales (FP/MD), GM%</li>
+      <li>Net: NetSales, NetGM%</li>
+      <li>Rates: RetRate, InvST</li>
     </ul>
   </li>
+  <li><p>Customers:</p>
+    <ul>
+      <li>New/Active Customers</li>
+      <li>Retention</li>
+      <li>Net Promoter Score (NPS)</li>
+    </ul>
+  </li>
+  <li><p>Marketing:</p>
+    <ul>
+      <li>CPA (CPC/PLA)</li>
+      <li>Est.Marketing Spend<ul>
+        <li>Paid Search &amp; SEO (Search Engine Optimization)</li>
+        <li>Retargeting</li>
+        <li>Affiliate</li>
+        <li>Social Media</li>
+        <li>CSE</li>
+        <li>Email</li>
+      </ul>
+    </li>
+  </ul>
+</li>
 </ul>
-<p>Both can serve as internal consultant roles.</p>
-<h2 id="important-metrics-kpis">Important Metrics &amp; KPIs</h2>
-<ul>
-  <li><p>Sales/Transaction: GsSales (FP/MD), GM%, RetRate, NetSales, NetGM%, InvST ...</p>
-  </li>
-  <li><p>Traffic: Visits, Conversion Rate (repeat/new visitor)</p>
-  </li>
-  <li><p>Customers: New/Active Customers, Retention, NPS</p>
-  </li>
-  <li><p>Marketing: CPA (CPC/PLA), Est.Marketing Spend (Paid Search/Retargeting/Affiliate/Social Media/CSE/SEO/Email etc.)</p>
-  </li>
-</ul>
-<h2 id="data-analytics-full-cycle">Data Analytics Full Cycle</h2>
+<h2 id="digital-marketing-analytics-full-cycle">Digital Marketing Analytics Full Cycle</h2>
 <p>Oversee every process in typical E-Commerce to look out for potential issues, problems and potential for optimization to boost business performance.</p>
 <p>General steps:</p>
 <ol>
-  <li>Setup solution for request</li>
+  <li>Setup solution for request: understand business background, scoping for phase and ETA</li>
   <li>Data mining: collection/cleaning/massage</li>
   <li>Analytical analysis: A/B testing, regression modeling, seasonality/trending, etc.</li>
   <li>Summarize findings and insights: provide solution and/or recommendation</li>
 </ol>
-<p><img src="{% static 'img/ecommerce_flow.jpg' %}" alt="ECommerce_Flow"></p>
-<h2 id="hiring-in-e-commerce">Hiring in E-Commerce</h2>
+<p><img src="/Users/wenkelliang/Documents/DAL_lectures/ecommerce_flow.png" width="50%"></p>
+<h2 id="how-to-build-customer-profile-">How to build customer profile?</h2>
 <ul>
-  <li><p>Data Analyst: STEM major preferred</p>
-  </li>
-  <li><p>Business Analyst: MBA/B-school preferred or equivalent working experience</p>
-  </li>
-  <li><p>Common Interview Question:</p>
-    <ul>
-      <li>SQL, Excel (8+ out of 10)</li>
-      <li>Scripting language like Python/Java (DA 8+/BA 6+)</li>
-      <li>Business questions related: metrics, logic, decision/strategy</li>
-      <li>Communication and problem solving skills</li>
-    </ul>
-  </li>
+  <li>Email Activity<ul>
+    <li>open/click count and rate click</li>
+    <li>opt in/unsubscribe</li>
+  </ul>
+</li>
+<li>Order Activity<ul>
+  <li>product type</li>
+  <li>order date</li>
+  <li>order value</li>
+</ul>
+</li>
+<li>Demographic Information<ul>
+  <li>gender</li>
+  <li>age</li>
+  <li>income</li>
+  <li>occupation/niches</li>
+  <li>region</li>
+  <li>credit/profitable_index</li>
+</ul>
+</li>
+</ul>
+<h2 id="how-to-increase-conversion-rate-case-study-1-">How to increase conversion rate? (CASE STUDY 1)</h2>
+<ul>
+  <li>Product attributes:<ul>
+    <li>Newness</li>
+    <li>Size availability</li>
+    <li>Product page view</li>
+  </ul>
+</li>
+<li>Ads Traffic tracking:<ul>
+  <li>Click through rate (CTR)</li>
+  <li>Avg ranking position</li>
+</ul>
+</li>
+<li>Inventory Status<ul>
+  <li>Brand breadth: # of styles by brand</li>
+  <li>Unit depth: # of sku units by brand</li>
+</ul>
+</li>
+</ul>
+<h2 id="how-to-segment-and-rank-customer-for-lifetime-value-analysis-case-study-2-">How to segment and rank customer for lifetime value analysis? (CASE STUDY 2)</h2>
+<ul>
+  <li>Recency - the amount of time since the customer’s most recent transaction</li>
+  <li>Frequency - the total number of transactions made by the customer (during a defined period)</li>
+  <li>Monetary - the total amount that the customer has spent across all transactions (during a defined period)</li>
 </ul>
 
 {% endblock %}

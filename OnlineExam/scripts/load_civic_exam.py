@@ -14,7 +14,7 @@ from datetime import date
 import django
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import connections
-os.environ['env'] = 'prod' # set environ to non-dev
+# os.environ['env'] = 'prod' # set environ to non-dev
 sys.path.append(os.path.abspath('../')) # jump to upper level folder for settings
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
 django.setup()
